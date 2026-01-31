@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .editable-text {
+  padding: 10px;
+  border: 1px dashed #ccc;
+  cursor: pointer; /* Changes cursor to a hand on hover */
+        }
+  /* Initially hide the form/button */
+.editable-text form {
+    display: none;
+    margin-top: 10px;
+}
+
+/* Show it only when the parent or a child is focused */
+.editable-text:focus-within form {
+    display: block;
+}
+
+.editable-text:hover {
+    background-color: #f9f9f9;
+    cursor: text;
+}
+
+
+.editable-text:focus {
+  cursor: text; /* Changes cursor to text beam when editing */
+  outline: 2px solid #007bff; /* Optional: adds a highlight when active */
+  background: #f9f9f9;
+}
+
+    </style>
+</head>
+<body>
+    <p>welcome {{username}}!</p>
+
+    <form action="/" method="post">
+        <label for="content">new note</label>
+        <br>
+        <label for="title">title</label>
+        <input type="text" name="title">
+        <textarea name="content" id=""></textarea>
+        <input type="submit">
+    </form>
+
+    {% for note in notes %}
+    
+        <p>{{note[1]}}</p>
+        <div contenteditable="true" id="note"  data-id="{{note[0]}}" class="editable-text">
+            <p id="real_note">{{note[2]}}</p>
+             <form action="/" method="post">
+            <input type="hidden" name="note_id" id="note_id" value={{note[0]}}>
+            <input type="submit" name="action" class="edit" id="edit_btn" value="edit">
+        </form>
+        </div>
+        <p>{{note[3]}}</p>
+        <form action="/" method="post">
+            <input type="hidden" name="note_id" value={{note[0]}}>
+            <input type="submit" name="action" value="delete">
+
+        </form>
+    {%endfor%}
+
+    <script>
+        document.addEventListener("click", e => {
+    if(e.target.classList.contains("edit")) {
+        e.preventDefault();
+        console.log("ayii")
+        
+        const container = e.target.closest(".editable-text");
+        
+        const note_id = container.getAttribute("data-id"); 
+        
+        const content = container.querySelector("#real_note").innerText;
+        
+        const action = e.target.value;
+
+        fetch("/", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+               id: note_id,
+               action: action,
+               content: content
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Server says:", data);
+            if(data.status === "success") {
+                e.target.value = "Saved!";
+                setTimeout(() => { e.target.value = "edit"; }, 2000);
+            }
+        });
+    }
+});
+    </script>
+</body>
+</html>
