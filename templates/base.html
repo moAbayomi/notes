@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotesApp - {% block title %}{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous"></script>
+    <!doctype html>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+        <style>
+        .editable-text {
+  padding: 10px;
+  border: 1px dashed #ccc;
+  cursor: pointer; /* Changes cursor to a hand on hover */
+        }
+  /* Initially hide the form/button */
+.editable-text form {
+    display: none;
+    margin-top: 10px;
+}
+
+/* Show it only when the parent or a child is focused */
+.editable-text:focus-within form {
+    display: block;
+}
+
+.editable-text:hover {
+    background-color: #f9f9f9;
+    cursor: text;
+}
+
+
+.editable-text:focus {
+  cursor: text; /* Changes cursor to text beam when editing */
+  outline: 2px solid #007bff; /* Optional: adds a highlight when active */
+  background: #f9f9f9;
+}
+
+    </style>
+    
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+</head>
+<body>
+  {%include "nav.html"%}
+    <div id="ancestral-container" class="flex flex-row w-full h-screen">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div style="color: blue; padding: 10px;">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+
+
+    <div id="sidebar" class="w-80 flex-shrink-0 overflow-y-auto bg-gray-50">
+      {% block content %}{% endblock %}
+    </div>
+    <div class="flex flex-col h-full bg-white" id="editor">
+    
+</div>
+
+    </div>
+
+</body>
+</html>

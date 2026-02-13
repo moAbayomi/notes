@@ -1,0 +1,18 @@
+<div class="flex flex-col h-full bg-white" id="editor">
+    <div class="text-center py-2 text-xs text-gray-400 uppercase tracking-widest border-b border-gray-50">
+        {{ format_note_date(note[3]) }}
+    </div>
+
+    <div contenteditable="true" 
+         id="active-editor" 
+         class="flex-1 px-12 py-8 outline-none text-black text-lg caret-yellow-500 whitespace-pre-wrap"
+         hx-put="/edit/{{note[0]}}"
+         hx-trigger="keyup delay:200ms"
+         hx-vals='js:{"content": document.getElementById("active-editor").innerText}'
+         hx-target="#notes-{{note[0]}}"
+         hx-swap="outerHTML"
+        >
+{{ note[1] }}
+{{ note[2] }}
+    </div>
+</div>

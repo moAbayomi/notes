@@ -1,20 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+ {%extends "base.html" %}
+
+
+ {% block content%}
     <form method="post" action="/register">
-        <label for="username">what would be your preferred username</label>
-        <input type="text" name="username">
-        <label for="email">Enter your email address</label>
-        <input type="text" name="email">
-        <label for="password">Enter your password</label>
-        <input type="password" name="password">
+
+        {{form.hidden_tag()}}
+
+        <p>{{form.username.label}}</p>
+        <p>{{form.username(size=32)}}</p>
+        {% for error in form.username.errors%}
+            <span style="color: red">[{{error}}]</span>
+        {%endfor%}
+
+        <p>{{form.email_addy.label}}</p>
+        <p>{{form.email_addy(size=32)}}</p>
+        {% for error in form.email_addy.errors%}
+            <span style="color: red">[{{error}}]</span>
+        {%endfor%}
         
-        <input type="submit">
+           <p>{{form.password.label}}</p>
+        <p>{{form.password(size=32)}}</p>
+        {% for error in form.password.errors%}
+            <span style="color: red">[{{error}}]</span>
+        {%endfor%}
+
+        <p>{{form.submit()}}</p>
+
+        <p>Already have an account?</p> 
+
     </form>
-</body>
-</html>
+
+      <form method="get" action="/login">
+            <input type="submit" value="login">
+        </form>
+    {%endblock%}
+    

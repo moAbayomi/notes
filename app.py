@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, redirect, url_for, session
 from database import get_db_connection
 from routes.auth import auth_blueprint
 from routes.notes import notes_blueprint
