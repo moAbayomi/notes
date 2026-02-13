@@ -1,0 +1,25 @@
+{% for item in results %}
+    {% set note = item.data %}
+    <div id="notes-{{note[0]}}" 
+         class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-all border-l-4 
+                {% if loop.first %} border-l-green-500 bg-green-50/30 {% else %} border-l-transparent {% endif %}"
+         hx-get="/get-note/{{note[0]}}?q={{query}}"
+         hx-target="#editor"
+         hx-trigger="click, {% if loop.first %}load delay:100ms{% endif %}"
+         hx-swap="outerHTML">
+
+        <h3 class="text-sm font-semibold text-gray-900 truncate">
+            {{ note[1] | highlight(query) }}
+        </h3>
+
+        <p class="text-xs text-gray-500 truncate mt-1">
+            {{ note[2][:60] | highlight(query) }}
+        </p>
+    </div>
+{% endfor %}
+
+{% if not results %}
+    <div class="p-8 text-center text-gray-400">
+        <p class="text-sm italic">No entries match "{{ query }}"</p>
+    </div>
+{% endif %}

@@ -4,11 +4,13 @@ from flask import Flask, redirect, url_for, session
 from database import get_db_connection
 from routes.auth import auth_blueprint
 from routes.notes import notes_blueprint
+from helper import highlighter
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+app.jinja_env.filters["highlight"] = highlighter
 
 
 con = get_db_connection()

@@ -158,3 +158,35 @@ def new_note():
 
     else:
         return redirect(url_for("auth.login"))           
+
+
+@notes_blueprint.route("/search")
+def search():
+    user_id = session.get("user_id")
+    if user_id:
+        query = request.args.get("q", "").strip()
+        con = get_db_connection()
+        try:
+            with con.cursor() as cur:
+                cur.execute("SELECT id, title, content, created_at FROM notes WHERE user_id=%s", (user_id,))
+                notes = cur.fetchall()
+        except Exception as e:
+            print("search error: ", e)
+        finally:
+            con.close()
+
+        results = []
+        if query:
+            for n in notes:
+                title_hits = n[1].lower().count(query.lower()) if n[1] else 0
+                content_hits = n[2].lower().count(query.lower()) if n[2] else 0
+                total_hits = title_hits + content_hits
+                if total_hits > 0:
+                    results.append({"data": n, "hits": total_hits})
+            results.sort(key=lambda x: x["hits"], reverse=True)
+        else:
+            return render_template("notes_sidebar.html", notes=notes, format_note_date=format_note_date)
+
+        return render_template("search_results.html", results=results, query=query, format_note_date=format_note_date)
+    else:
+        return redirect(url_for("auth.login"))

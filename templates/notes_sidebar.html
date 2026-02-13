@@ -1,0 +1,21 @@
+<div id="sidebar" class="w-80 flex-shrink-0 overflow-y-auto bg-gray-50">
+<div id="new-notes-container"></div>
+{% for note in notes %}
+<div id="notes-{{note[0]}}" 
+class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors"
+hx-get="/get-note/{{note[0]}}"
+hx-target="#editor"
+hx-swap="outerHTML"
+hx-trigger="click"
+>
+
+   <h3 class="text-sm font-semibold text-gray-900 truncate">
+        {{ note[1] or "Untitled Note" }}
+    </h3>
+
+    <p class="text-xs text-gray-500 truncate mt-1">
+      <span class="font-medium">{{format_note_date(note[3])}}</span>  {{ note[2][:60] }}...
+    </p>
+</div>
+{% endfor %}
+ </div>
