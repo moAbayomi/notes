@@ -1,25 +1,46 @@
-{% extends "base.html" %}
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
 {% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full">
+    <div class="bg-white p-8 border border-gray-200 rounded-lg">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+          Sign in to your account
+        </h2>
+        <p class="text-sm text-gray-600">
+          Or <a href="/register" class="text-gray-900 hover:text-gray-700">create a new account</a>
+        </p>
+      </div>
 
-    <form action="/login" method="post">
-        {{form.hidden_tag()}}
+      <form class="space-y-6" action="/login" method="post">
+        {{ form.hidden_tag() }}
 
-        <p>{{form.email_addy.label}}</p>
-        <p>{{form.email_addy(size=32)}}</p>
+        <div>
+          <label for="email_addy" class="block text-sm font-medium text-gray-700 mb-2">{{ form.email_addy.label }}</label>
+          {{ form.email_addy(class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500", placeholder="Email address") }}
+        </div>
 
-        <p>{{form.password.label}}</p>
-        <p>{{form.password(size=32)}}</p>
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-2">{{ form.password.label }}</label>
+          {{ form.password(class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500", placeholder="Password") }}
+        </div>
 
-        <p>{{form.submit}}</p>
+        <div>
+          {{ form.submit(class="w-full bg-gray-900 text-white py-2 px-4 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2") }}
+        </div>
 
-        {% with messages = get_flashed_messages(with_categories=true)%}
-        {%if messages %}
-        {%for category, message in messages%}
-            <div class="alert alert-{{ category }}">{{ message }}</div>
-        {%endfor%}
-        {%endif%}
-        {%endwith%}
-
-    </form>
-    {% endblock %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="mt-4 p-3 rounded-md bg-red-50 border border-red-200 text-red-700 text-sm">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
