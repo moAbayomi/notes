@@ -1,5 +1,17 @@
 <div class="flex flex-col h-full bg-white" id="editor">
-    <div class="text-center py-2 text-xs text-gray-400 uppercase tracking-widest border-b border-gray-50">
+    <div class="flex items-center justify-between px-4 py-2 border-b border-gray-50 md:hidden">
+        <button id="back-to-notes" class="text-gray-600 hover:text-gray-900 p-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+        <div class="text-xs text-gray-400 uppercase tracking-widest">
+            {{ format_note_date(note[3]) }}
+        </div>
+        <div class="w-10"></div> <!-- Spacer for centering -->
+    </div>
+
+    <div class="text-center py-2 text-xs text-gray-400 uppercase tracking-widest border-b border-gray-50 hidden md:block">
         {{ format_note_date(note[3]) }}
     </div>
 
