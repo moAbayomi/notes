@@ -10,6 +10,7 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+app.config['WTF_CSRF_ENABLED'] = True
 app.jinja_env.filters["highlight"] = highlighter
 
 
@@ -30,4 +31,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=os.getenv("FLASK_DEBUG", "False").lower() == "true")
