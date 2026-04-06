@@ -5,20 +5,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_db_connection():
+    # This one line replaces dbname, user, password, host, and port
+    # It pulls the entire string from Render
+    conn_string = os.getenv("DATABASE_URL")
+    
     try:
-        return psycopg.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASS"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT")
-        )
-       
+        return psycopg.connect(conn_string)
     except psycopg.Error as e:
-        print("error connecting:", e)
+        print("Error connecting:", e)
         return None
-
-
-
-
-        
