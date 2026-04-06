@@ -15,8 +15,6 @@ def register():
         plain_password = form.password.data
         password_hash = generate_password_hash(plain_password)
 
-        print(username, email, password_hash)
-
         try:
             with con.cursor() as cur:
                 cur.execute("""
